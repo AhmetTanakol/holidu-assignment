@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: interview.assignment
+Implementation-Version: 1.0-SNAPSHOT
+Built-By: ahmettanakol
+Implementation-Vendor-Id: com.holidu
+Build-Jdk: 1.8.0_151
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/interview.assignment
+Created-By: Maven Integration for Eclipse
+
