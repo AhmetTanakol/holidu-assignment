@@ -33,7 +33,7 @@ public class TreeController {
     	try {
 			fetchService.fetchData();
 			List<String> responses = fetchService.getResponses();
-			return new ResponseEntity<Map<String, Integer>>(treeService.formatResponse(responses), HttpStatus.OK);
+			return new ResponseEntity<Map<String, Integer>>(treeService.formatResponse(responses).getTrees(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Map<String, Integer>>(new HashMap<String, Integer>(), HttpStatus.BAD_REQUEST);

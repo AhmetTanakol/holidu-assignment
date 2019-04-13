@@ -9,6 +9,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.holidu.interview.assignment.model.TreeCount;
 import com.holidu.interview.assignment.utils.Utils;
 
 public class TreeService {
@@ -50,21 +51,21 @@ public class TreeService {
 		return builder.build();
 	}
 	
-	public HashMap<String,Integer> formatResponse(List<String> responses) {
-		HashMap<String, Integer> treeCounts = new HashMap<String, Integer>();
+	public TreeCount formatResponse(List<String> responses) {
+		TreeCount trees = new TreeCount();
 		//  { "red maple": 30, "American linden": 1, "London planetree": 3 } 
 		responses.forEach((responseSet) -> {
 			JSONArray treeData = new JSONArray(responseSet);
 			for (int i = 0; i < treeData.length(); i++) {
 			    JSONObject treeCount = treeData.getJSONObject(i);
 			    if (!treeCount.isNull("spc_common") && !treeCount.isNull("count_spc_common")) {
-					treeCounts.put(treeCount.getString("spc_common"),
-								   Integer.parseInt(treeCount.getString("count_spc_common")));
+					trees.addTree(treeCount.getString("spc_common"),
+								  Integer.parseInt(treeCount.getString("count_spc_common")));
 				}
 			}
 		}); 
 		
-		return treeCounts;
+		return trees;
 	}
 
 }
