@@ -24,19 +24,23 @@ public class TreeController {
 	private Utils utils = new Utils();
 
     @GetMapping(path = "/trees")
-    public ResponseEntity<Map<String, Integer>> getTreeData(@RequestParam int x, @RequestParam int y, @RequestParam int radius) throws URISyntaxException {
+    public ResponseEntity<Map<String, Integer>> getTreeData(@RequestParam int x, @RequestParam int y, @RequestParam int radius) {
     	String url = "https://data.cityofnewyork.us/resource/nwxe-4ae8.json";
     	JSONObject boundaries = utils.calculateCircleBoundaries(x, y, radius);
-    	URI uri = treeService.uriBuilder(url, boundaries, "", "");
-    	URI[] uris = {uri};
-    	fetchService.setURI(uris);
     	try {
+    		URI uri = treeService.uriBuilder(url, boundaries, "", "");
+        	URI[] uris = {uri};
+        	fetchService.setURI(uris);
 			fetchService.fetchData();
 			List<String> responses = fetchService.getResponses();
 			return new ResponseEntity<Map<String, Integer>>(treeService.formatResponse(responses).getTrees(), HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
+			return new ResponseEntity<Map<String, Integer>>(new HashMap<String, Integer>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    	catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Map<String, Integer>>(new HashMap<String, Integer>(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Map<String, Integer>>(new HashMap<String, Integer>(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     	
     }

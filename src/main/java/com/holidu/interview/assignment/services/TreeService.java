@@ -53,7 +53,6 @@ public class TreeService {
 	
 	public TreeCount formatResponse(List<String> responses) {
 		TreeCount trees = new TreeCount();
-		//  { "red maple": 30, "American linden": 1, "London planetree": 3 } 
 		responses.forEach((responseSet) -> {
 			JSONArray treeData = new JSONArray(responseSet);
 			for (int i = 0; i < treeData.length(); i++) {
