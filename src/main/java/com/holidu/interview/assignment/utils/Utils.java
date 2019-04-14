@@ -11,8 +11,8 @@ public class Utils {
 	 * @param number
 	 * @return
 	 */
-	public int convertMetersToFeet(int number) {
-		return (int)(number *  3.2);
+	public double convertMetersToFeet(double number) {
+		return number *  3.2;
 	}
 	
 	/**
@@ -26,8 +26,8 @@ public class Utils {
 	 * @param radius
 	 * @return
 	 */
-	public boolean isWithinRadius(int x, int y, int targetX, int targetY, int radius) {
-		int distance = (int) Math.sqrt((targetX - x)^2 + (targetY - y)^2);
+	public boolean isWithinRadius(double x, double y, double targetX, double targetY, double radius) {
+		double distance = Math.sqrt(Math.pow((targetX - x), 2) + Math.pow((targetY - y), 2));
 	    return distance <= radius;
 	}
 	

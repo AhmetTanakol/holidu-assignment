@@ -13,7 +13,7 @@ import com.holidu.interview.assignment.model.Boundaries;
 import com.holidu.interview.assignment.model.TreeCount;
 import com.holidu.interview.assignment.utils.Utils;
 
-public class TreeService {
+public class TreeService{
 	private Utils utils = new Utils();
 	
 	/**
@@ -23,15 +23,15 @@ public class TreeService {
 	 * @return
 	 */
 	public String prepareQueryParamsForLocation(Boundaries boundaries) {
-		int maxXBoundary = boundaries.getMaxX();
-		int minXBoundary = boundaries.getMinX();
-		int maxYBoundary = boundaries.getMaxY();
-		int minYBoundary = boundaries.getMinY();
+		double maxXBoundary = boundaries.getMaxX();
+		double minXBoundary = boundaries.getMinX();
+		double maxYBoundary = boundaries.getMaxY();
+		double minYBoundary = boundaries.getMinY();
 		
-		String whereClause = "x_sp <= " + maxXBoundary + " AND " +
-							 "x_sp >= " + minXBoundary + " AND " +
-							 "y_sp <= " + maxYBoundary + " AND " +
-							 "y_sp >= " + minYBoundary;
+		String whereClause = "x_sp <= " + Double.toString(maxXBoundary) + " AND " +
+							 "x_sp >= " + Double.toString(minXBoundary) + " AND " +
+							 "y_sp <= " + Double.toString(maxYBoundary) + " AND " +
+							 "y_sp >= " + Double.toString(minYBoundary);
 		
 		return whereClause;
 	}
@@ -82,13 +82,13 @@ public class TreeService {
 	 * @param y
 	 * @param radius
 	 */
-	public void processResponse(TreeCount treeCounts,String response, int x, int y, int radius) {
+	public void processResponse(TreeCount treeCounts,String response, double x, double y, double radius) {
 		JSONArray treeData = new JSONArray(response);
 		for (int i = 0; i < treeData.length(); i++) {
 		    JSONObject treeCount = treeData.getJSONObject(i);
-		    if (!treeCount.isNull("spc_common")) {
-		    	int x_sp = (int) Double.parseDouble(treeCount.getString("x_sp"));
-		    	int y_sp = (int) Double.parseDouble(treeCount.getString("y_sp"));
+		    if (!treeCount.isNull("spc_common") && !treeCount.getString("spc_common").isEmpty()) {
+		    	double x_sp = Double.parseDouble(treeCount.getString("x_sp"));
+		    	double y_sp = Double.parseDouble(treeCount.getString("y_sp"));
 		    	if (utils.isWithinRadius(x, y, x_sp, y_sp, radius)) {
 			    	treeCounts.addTree(treeCount.getString("spc_common"), 1);	
 		    	}
@@ -107,16 +107,17 @@ public class TreeService {
 	 * @throws InterruptedException
 	 * @throws ExecutionException
 	 */
-	public TreeCount calculateTreeCount(List<String> responses, int x, int y, int radius) throws InterruptedException, ExecutionException {
+	public TreeCount calculateTreeCount(List<String> responses, double x, double y, double radius) throws InterruptedException, ExecutionException {
 		TreeCount treeCounts = new TreeCount();
 		if (responses.isEmpty()) {
 			return treeCounts;
 		}
+		/// Invoke parallelstream in ForkJoinPool
+		/// Parallelstreams use common pool from ForkJoinPool, so we can increase the level of parallelism
 		ForkJoinPool customThreadPool = new ForkJoinPool(4);
 		customThreadPool.submit(() -> 
 	    	responses.parallelStream().forEach(response -> processResponse(treeCounts, response, x, y, radius))).get();
 		
 		return treeCounts;
 	}
-
 }

@@ -47,6 +47,10 @@ public class MultithreadedFetchService {
 		return this.responses;
 	}
 	
+	public URI[] getURI() {
+		return this.uris;
+	}
+
 	public void setURI(URI[] uris) throws URISyntaxException {
 		// URIs to perform GET requests on
 		this.uris = uris;

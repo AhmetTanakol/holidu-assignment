@@ -32,14 +32,14 @@ public class TreeController {
 	private Environment env;
 
     @GetMapping(path = "/trees")
-    public ResponseEntity<TreeCount> getTreeData(@RequestParam int x, @RequestParam int y, @RequestParam int radius) {
+    public ResponseEntity<TreeCount> getTreeData(@RequestParam double x, @RequestParam double y, @RequestParam double radius) {
     	String url = env.getProperty("app.datasource.endpoint");
     	if (radius < 0) {
     		throw new InvalidRadiusException();
     	}
     	/// API service that returns information about trees use feet as unit
     	/// for cartesian coordinates
-    	int radiusInFeet = utils.convertMetersToFeet(radius);
+    	double radiusInFeet = utils.convertMetersToFeet(radius);
     	
     	/// To decrease the number of results, limit the search range
     	/// API service supports searching rows based on the location data

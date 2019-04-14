@@ -1,10 +1,10 @@
 package com.holidu.interview.assignment.model;
 
 public class Boundaries {
-	private int maxX;
-	private int minX;
-	private int maxY;
-	private int minY;
+	private double maxX;
+	private double minX;
+	private double maxY;
+	private double minY;
 
 	/**
 	 * A circle can be described with this cartesian equation: (x − a)^2 + (y − b)^2 = r^2
@@ -34,14 +34,14 @@ public class Boundaries {
 	 * @param y
 	 * @param radius
 	 */
-	public Boundaries(int x, int y, int radius) {
-		this.maxX = new Integer(x + radius);
-		this.minX = new Integer(x - radius);
-		this.maxY = new Integer(y + radius);
-		this.minY = new Integer(y - radius);
+	public Boundaries(double x, double y, double radius) {
+		this.maxX = x + radius;
+		this.minX = x - radius;
+		this.maxY = y + radius;
+		this.minY = y - radius;
 	}
 
-	public int getMaxX() {
+	public double getMaxX() {
 		return maxX;
 	}
 
@@ -49,7 +49,7 @@ public class Boundaries {
 		this.maxX = maxX;
 	}
 
-	public int getMinX() {
+	public double getMinX() {
 		return minX;
 	}
 
@@ -57,7 +57,7 @@ public class Boundaries {
 		this.minX = minX;
 	}
 
-	public int getMaxY() {
+	public double getMaxY() {
 		return maxY;
 	}
 
@@ -65,7 +65,7 @@ public class Boundaries {
 		this.maxY = maxY;
 	}
 
-	public int getMinY() {
+	public double getMinY() {
 		return minY;
 	}
 
