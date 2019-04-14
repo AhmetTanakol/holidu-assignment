@@ -14,13 +14,19 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
-import org.json.JSONObject;
 
+
+/**
+ * A multithreaded service that can fetch data from the same route by using up to 20 threads
+ * 
+ * 
+ * @author ahmettanakol
+ *
+ */
 public class MultithreadedFetchService {
 	private URI[] uris;
 	private CloseableHttpClient httpClient;

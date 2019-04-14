@@ -10,7 +10,7 @@ public class TreeCount {
 	}
 
 	public void addTree(String name, int count) {
-		trees.putIfAbsent(name, count);
+		trees.merge(name, count, Integer::sum);
 	}
 	
 	
