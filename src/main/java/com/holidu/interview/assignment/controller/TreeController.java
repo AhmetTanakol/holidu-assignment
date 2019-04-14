@@ -27,43 +27,43 @@ public class TreeController {
 	private MultithreadedFetchService fetchService = new MultithreadedFetchService();
 	private TreeService treeService = new TreeService();
 	private Utils utils = new Utils();
-	
+
 	@Autowired
 	private Environment env;
 
-    @GetMapping(path = "/trees")
-    public ResponseEntity<TreeCount> getTreeData(@RequestParam double x, @RequestParam double y, @RequestParam double radius) {
-    	String url = env.getProperty("app.datasource.endpoint");
-    	if (radius < 0) {
-    		throw new InvalidRadiusException();
-    	}
-    	/// API service that returns information about trees use feet as unit
-    	/// for cartesian coordinates
-    	double radiusInFeet = utils.convertMetersToFeet(radius);
-    	
-    	/// To decrease the number of results, limit the search range
-    	/// API service supports searching rows based on the location data
-    	/// However, for tree data there is no 'Location' data type
-    	Boundaries boundaries = new Boundaries(x, y, radiusInFeet);
-    	try {
-    		/// Prepare query params for search area
-    		/// We can filter results based on the given boundaries
-    		String locationQueryParams = treeService.prepareQueryParamsForLocation(boundaries);
-    		
-    		/// Select only relevant fields
-    		String fields = "spc_common, x_sp, y_sp";
-    		
-    		/// Set uris
-    		URI uri = treeService.uriBuilder(url, fields, locationQueryParams, "", "");
-        	URI[] uris = {uri};
-        	fetchService.setURI(uris);
-        	
-        	/// Make request
+	@GetMapping(path = "/trees")
+	public ResponseEntity<TreeCount> getTreeData(@RequestParam double x, @RequestParam double y, @RequestParam double radius) {
+		String url = env.getProperty("app.datasource.endpoint");
+		if (radius < 0) {
+			throw new InvalidRadiusException();
+		}
+		/// API service that returns information about trees use feet as unit
+		/// for cartesian coordinates
+		double radiusInFeet = utils.convertMetersToFeet(radius);
+
+		/// To decrease the number of results, limit the search range
+		/// API service supports searching rows based on the location data
+		/// However, for tree data there is no 'Location' data type
+		Boundaries boundaries = new Boundaries(x, y, radiusInFeet);
+		try {
+			/// Prepare query params for search area
+			/// We can filter results based on the given boundaries
+			String locationQueryParams = treeService.prepareQueryParamsForLocation(boundaries);
+
+			/// Select only relevant fields
+			String fields = "spc_common, x_sp, y_sp";
+
+			/// Set uris
+			URI uri = treeService.uriBuilder(url, fields, locationQueryParams, "", "");
+			URI[] uris = {uri};
+			fetchService.setURI(uris);
+
+			/// Make request
 			fetchService.fetchData();
-			
+
 			/// Read results
 			List<String> responses = fetchService.getResponses();
-			
+
 			/// Calculate tree counts
 			TreeCount treeCounts = treeService.calculateTreeCount(responses, x, y, radiusInFeet);
 			return new ResponseEntity<TreeCount>(treeCounts, HttpStatus.OK);
@@ -71,10 +71,10 @@ public class TreeController {
 			e1.printStackTrace();
 			throw new InvalidURLException();
 		}
-    	catch (Exception e) {
+		catch (Exception e) {
 			e.printStackTrace();
 			throw new UnexpectedServerErrorException();
 		}
-    	
-    }
+
+	}
 }

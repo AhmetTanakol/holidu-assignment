@@ -16,7 +16,7 @@ public class BoundariesTest {
 		Assert.assertTrue("It should set max value of y to 2", boundaries.getMaxY() == 2);
 		Assert.assertTrue("It should set min value of y to -2", boundaries.getMinY() == -2);
 	}
-	
+
 	@Test
 	public void setValuesOfFields() {
 		Boundaries boundaries = new Boundaries(0, 0, 2);

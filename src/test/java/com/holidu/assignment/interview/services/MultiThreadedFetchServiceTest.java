@@ -26,37 +26,37 @@ public class MultiThreadedFetchServiceTest {
 
 	MultithreadedFetchService fetchService;
 	TreeService treeService;
-	
-    @Autowired
-    ClassUsingProperty classUsingProperty;
-	
+
+	@Autowired
+	ClassUsingProperty classUsingProperty;
+
 	@Before
-    public void setServices() {
+	public void setServices() {
 		fetchService = new MultithreadedFetchService();
 		treeService = new TreeService();
-    }
-	
+	}
+
 	@Test(expected = Test.None.class /* no exception expected */)
 	public void setURIForFetchService() throws URISyntaxException {
 		URI uri = treeService.uriBuilder("localhost:8080", "name", "", "", "");
-    	URI[] uris = {uri};
-    	fetchService.setURI(uris);
-    	Assert.assertArrayEquals(uris, fetchService.getURI());
+		URI[] uris = {uri};
+		fetchService.setURI(uris);
+		Assert.assertArrayEquals(uris, fetchService.getURI());
 	}
-	
+
 	@Test
 	public void checkFetchServiceResponses() {
 		Assert.assertTrue(fetchService.getResponses().isEmpty());
 		Assert.assertThat(fetchService.getResponses().size(), is(0));
 	}
-	
+
 	@Test(expected = Test.None.class /* no exception expected */)
 	public void fetchDataFromURL() throws URISyntaxException {
 		String url = classUsingProperty.retrieveURL();
 		System.out.println(url);
 		URI uri = treeService.uriBuilder(url, "spc_common", "", "1", "");
-    	URI[] uris = {uri};
-    	fetchService.setURI(uris);
+		URI[] uris = {uri};
+		fetchService.setURI(uris);
 		fetchService.fetchData();
 		List<String> responses = fetchService.getResponses();
 		Assert.assertTrue(!responses.isEmpty());

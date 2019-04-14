@@ -26,28 +26,28 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public ApiError handleInvalidURLException(InvalidURLException ex) {
-	    ApiError apiError = 
-	  	      new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
-	    return apiError;
+		ApiError apiError = 
+				new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
+		return apiError;
 	}
-	
+
 	@ExceptionHandler(InvalidRadiusException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
 	public ApiError handleInvalidRadiusException(InvalidRadiusException ex) {
-	    ApiError apiError = 
-	  	      new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
-	    return apiError;
+		ApiError apiError = 
+				new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
+		return apiError;
 	}
-	
-	
+
+
 	@ExceptionHandler(UnexpectedServerErrorException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
 	public ApiError handleUnexpectedServerErrorException(UnexpectedServerErrorException ex) {
-	    ApiError apiError = 
-	  	      new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), ex.getMessage());
-	    return apiError;
+		ApiError apiError = 
+				new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), ex.getMessage());
+		return apiError;
 	}
 
 }

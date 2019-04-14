@@ -24,51 +24,51 @@ import static io.restassured.RestAssured.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = App.class)
 public class TreeControllerTest {
 
-    @LocalServerPort
-    protected int port;
+	@LocalServerPort
+	protected int port;
 
-    @Before
-    public void beforeTest() {
-        RestAssured.port = port;
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
+	@Before
+	public void beforeTest() {
+		RestAssured.port = port;
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+	}
 
-    @Test
-    public void getTreeCounts() {
-        //@formatter:off
-    	ValidatableResponse result = given()
-            .contentType(ContentType.JSON)
-            .param("x", "913949")
-            .param("y", "120317")
-            .param("radius", "50")
-        .when()
-            .get("trees")
-        .then();
-    	
-        result.statusCode(HttpStatus.SC_OK);
-        result.assertThat().body(containsString("trees"));
+	@Test
+	public void getTreeCounts() {
+		//@formatter:off
+		ValidatableResponse result = given()
+				.contentType(ContentType.JSON)
+				.param("x", "913949")
+				.param("y", "120317")
+				.param("radius", "50")
+				.when()
+				.get("trees")
+				.then();
 
-        //@formatter:on
+		result.statusCode(HttpStatus.SC_OK);
+		result.assertThat().body(containsString("trees"));
 
-    }
-    
-    @Test
-    public void sendInvalidRadius() {
-        //@formatter:off
-    	ValidatableResponse result = given()
-            .contentType(ContentType.JSON)
-            .param("x", "913949")
-            .param("y", "120317")
-            .param("radius", "-50")
-        .when()
-            .get("trees")
-        .then();
-    	
-        result.statusCode(HttpStatus.SC_BAD_REQUEST);
-        result.assertThat().body("status", Matchers.equalTo("BAD_REQUEST"));
-        result.assertThat().body("errors[0]", Matchers.equalTo("Radius value is invalid"));
+		//@formatter:on
 
-        //@formatter:on
+	}
 
-    }
+	@Test
+	public void sendInvalidRadius() {
+		//@formatter:off
+		ValidatableResponse result = given()
+				.contentType(ContentType.JSON)
+				.param("x", "913949")
+				.param("y", "120317")
+				.param("radius", "-50")
+				.when()
+				.get("trees")
+				.then();
+
+		result.statusCode(HttpStatus.SC_BAD_REQUEST);
+		result.assertThat().body("status", Matchers.equalTo("BAD_REQUEST"));
+		result.assertThat().body("errors[0]", Matchers.equalTo("Radius value is invalid"));
+
+		//@formatter:on
+
+	}
 }

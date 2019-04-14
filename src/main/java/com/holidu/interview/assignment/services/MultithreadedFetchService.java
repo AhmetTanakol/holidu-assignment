@@ -33,7 +33,7 @@ public class MultithreadedFetchService {
 	private List<String> responses = new ArrayList<String>();
 
 	public MultithreadedFetchService() {
-        // Pool of client connections to serve connection requests from multiple execution threads
+		// Pool of client connections to serve connection requests from multiple execution threads
 		// Works on a per route basis 
 		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 		// Set max connections to 100 for now
@@ -42,11 +42,11 @@ public class MultithreadedFetchService {
 		cm.setDefaultMaxPerRoute(20);
 		this.httpClient = HttpClients.custom().setConnectionManager(cm).build();
 	}
-	
+
 	public List<String> getResponses() {
 		return this.responses;
 	}
-	
+
 	public URI[] getURI() {
 		return this.uris;
 	}
@@ -54,27 +54,27 @@ public class MultithreadedFetchService {
 	public void setURI(URI[] uris) throws URISyntaxException {
 		// URIs to perform GET requests on
 		this.uris = uris;
-	
+
 	}
-	
+
 	public void fetchData() {
 		// create a thread for each URL
 		FetchThread[] threads = new FetchThread[this.uris.length];
 		for (int i = 0; i < threads.length; i++) {
-		    HttpGet httpget = new HttpGet(this.uris[i]);
-		    threads[i] = new FetchThread(this.httpClient, httpget);
+			HttpGet httpget = new HttpGet(this.uris[i]);
+			threads[i] = new FetchThread(this.httpClient, httpget);
 		}
 
 		// start the threads
 		for (int j = 0; j < threads.length; j++) {
-		    threads[j].start();
+			threads[j].start();
 		}
 
 		// join the threads
 		for (int j = 0; j < threads.length; j++) {
-		    try {
+			try {
 				threads[j].join();
-				
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -82,45 +82,45 @@ public class MultithreadedFetchService {
 	}
 
 	public class FetchThread extends Thread {
-        private final CloseableHttpClient httpClient;
-        private final HttpGet request;
-        private final HttpContext context;
+		private final CloseableHttpClient httpClient;
+		private final HttpGet request;
+		private final HttpContext context;
 
-        public FetchThread(CloseableHttpClient httpClient, HttpGet request) {
-            super();
-            this.httpClient = httpClient;
-            this.request = request;
-            this.context = HttpClientContext.create();
-        }
+		public FetchThread(CloseableHttpClient httpClient, HttpGet request) {
+			super();
+			this.httpClient = httpClient;
+			this.request = request;
+			this.context = HttpClientContext.create();
+		}
 
-        @Override
-        public void run() {
-            try {
-                CloseableHttpResponse response = this.httpClient.execute(this.request, this.context);
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode != HttpStatus.SC_OK) {
-                    System.err.println("Method failed: " + statusCode);
-                }
+		@Override
+		public void run() {
+			try {
+				CloseableHttpResponse response = this.httpClient.execute(this.request, this.context);
+				int statusCode = response.getStatusLine().getStatusCode();
+				if (statusCode != HttpStatus.SC_OK) {
+					System.err.println("Method failed: " + statusCode);
+				}
 
-                // Reading the status body.  
-                try {
-                    HttpEntity entity = response.getEntity();
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(entity.getContent()));
-            		StringBuffer result = new StringBuffer();
-            		String line = "";
-            		while ((line = rd.readLine()) != null) {
-            			result.append(line);
-            		}
-            		responses.add(result.toString());
-                } finally {
-                    response.close();
-                }
-            } catch (ClientProtocolException ex) {
-            	System.err.println("Fatal transport error: " + ex.getMessage());
-            } catch (IOException e) {
-                System.err.println("Fatal transport error: " + e.getMessage());
-            }
-        }
+				// Reading the status body.  
+				try {
+					HttpEntity entity = response.getEntity();
+					BufferedReader rd = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuffer result = new StringBuffer();
+					String line = "";
+					while ((line = rd.readLine()) != null) {
+						result.append(line);
+					}
+					responses.add(result.toString());
+				} finally {
+					response.close();
+				}
+			} catch (ClientProtocolException ex) {
+				System.err.println("Fatal transport error: " + ex.getMessage());
+			} catch (IOException e) {
+				System.err.println("Fatal transport error: " + e.getMessage());
+			}
+		}
 
-    }
+	}
 }
