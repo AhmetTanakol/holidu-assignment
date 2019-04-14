@@ -19,3 +19,13 @@ Output
     "London planetree": 3
 }
 ```
+
+## Getting started
+
+> Run App.java as JAVA Application
+
+> App is running on localhost:8080. You can use the following sample request
+
+    localhost:8080/trees?x=913368.6477&y=124270.9733&radius=1000
+    
+> Radius should be greater than 0
